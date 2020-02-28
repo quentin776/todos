@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="todos.css" />
+    <link rel="script" href="todos.js" />
+  </head>
+  <body>
+    <div id="todos">
+      <section class="todoapp">
+        <header class="header">
+          <h1>Todos</h1>
+          <input
+            type="text"
+            class="new-todo"
+            placeholder="Ajouter une tache"
+            @keyup.enter="addTodo"
+            v-model="newTodo"
+          />
+        </header>
+        <div class="main">
+          <input type="checkbox" id="toggle-all" class="toggle-all" />
+          <label for="toggle-all">Mark all as complete</label>
+          <ul class="todo-list">
+            <li v-for="todo in todoList">
+              <div class="view">
+                <input type="checkbox" class="toggle" />
+                <label>{{todo.title}}</label>
+                <button class="destroy"></button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <footer class="footer">
+          <span class="todo-count"><strong>1</strong> tâches à faire</span>
+          <ul class="filters">
+            <li><a href="#" class="selected">Toutes</a></li>
+            <li><a href="#">À faire</a></li>
+            <li><a href="#">Faites</a></li>
+          </ul>
+          <button class="clear-completed">Clear accomplished</button>
+        </footer>
+      </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="todos.js"></script>
+  </body>
+</html>
