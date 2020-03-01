@@ -19,26 +19,80 @@
           />
         </header>
         <div class="main">
-          <input type="checkbox" id="toggle-all" class="toggle-all" />
+          <input
+            type="checkbox"
+            id="toggle-all"
+            class="toggle-all"
+            v-model="allDone"
+          />
           <label for="toggle-all">Mark all as complete</label>
           <ul class="todo-list">
-            <li v-for="todo in todoList">
+            <li
+              v-for="todo in filteredTodos"
+              class="todo"
+              :class="{completed: todo.completed, editing: todo === editing}"
+            >
               <div class="view">
-                <input type="checkbox" class="toggle" />
-                <label>{{todo.title}}</label>
-                <button class="destroy"></button>
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  v-model="todo.completed"
+                />
+                <label @dblclick="editTodo(todo)">{{todo.title}}</label>
+                <button
+                  class="destroy"
+                  @click.prevent="deleteTodo(todo)"
+                ></button>
               </div>
+              <input
+                type="text"
+                class="edit"
+                v-model="todo.name"
+                @keyup.enter="doneEdit"
+                @blur="doneEdit"
+                @keyup.esc="cancelEdit"
+                v-focus="todo === editing"
+              />
             </li>
           </ul>
         </div>
-        <footer class="footer">
-          <span class="todo-count"><strong>1</strong> tâches à faire</span>
+        <footer class="footer" v-show="todoList.length > 0">
+          <span class="todo-count"
+            ><strong>{{ remaining }}</strong> tâches à faire</span
+          >
           <ul class="filters">
-            <li><a href="#" class="selected">Toutes</a></li>
-            <li><a href="#">À faire</a></li>
-            <li><a href="#">Faites</a></li>
+            <li>
+              <a
+                href="#"
+                :class="{selected: filter === 'all'}"
+                @click.prevent="filter = 'all'"
+                >Toutes</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                :class="{selected: filter === 'todo'}"
+                @click.prevent="filter = 'todo'"
+                >À faire</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                :class="{selected: filter === 'done'}"
+                @click.prevent="filter = 'done'"
+                >Faites</a
+              >
+            </li>
           </ul>
-          <button class="clear-completed">Clear accomplished</button>
+          <button
+            class="clear-completed"
+            v-show="completed"
+            @click.prevent="deleteCompleted"
+          >
+            Clear accomplished
+          </button>
         </footer>
       </section>
     </div>
